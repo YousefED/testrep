@@ -1,7 +1,7 @@
 {
   "name": "@yousefed/testrep",
   "version": "1.0.0",
-  "description": "",
+  "description": "test",
   "main": "dist/notebook.js",
   "module": "dist/notebook.module.js",
   "umd:main": "dist/notebook.umd.js",
