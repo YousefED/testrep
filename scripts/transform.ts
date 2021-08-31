@@ -24,6 +24,14 @@ type CSSCell = {
 
 type Cell = MarkdownCell | CSSCell | TypeScriptCell;
 
+function relativePathAlwaysDot(from: string, to: string) {
+  let ret = path.relative(from, to);
+  if (!ret.startsWith(".") && !ret.startsWith(path.sep)) {
+    ret = "." + path.sep + ret;
+  }
+  return ret;
+}
+
 export function cellFromFile(sourcePath: string): Cell {
   if (sourcePath.endsWith(".tsx")) {
     return {
@@ -58,15 +66,15 @@ export function buildMarkdownCell(cell: {
   const outPath = path.join(outDir, path.parse(cell.sourcePath).name + ".js");
 
   let markdown = fs.readFileSync(cell.sourcePath, "utf-8");
-  let totalCode = `define(["require", "exports", "markdown-it"], function (require, exports, markdown_it_1) {
+  let totalCode = `define(["require", "exports", "marked"], function (require, exports, marked) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    const md = markdown_it_1.default({
-        html: true,
-        linkify: true,
-        typographer: true,
-    });
-    const render = md.render(${JSON.stringify(markdown)});
+    // const md = markdown_it_1.default({
+    //     html: true,
+    //     linkify: true,
+    //     typographer: true,
+    // });
+    const render = marked.default(${JSON.stringify(markdown)});
     const el = document.createElement("div");
     el.className = "markdown-body";
     el.innerHTML = render;
@@ -96,9 +104,6 @@ export function patchAMDOutput(amdPath: string) {
 }
 
 export function getCellsFileCode() {
-  const outDir = "../src/generated";
-  const outPath = path.join(outDir, "cells.ts");
-
   const cells = cellsFromDirectory(sourceDir);
   const tsCells = cells.filter(
     (c) => c.language === "typescript"
@@ -115,13 +120,13 @@ export function getCellsFileCode() {
 
   const codeImports = [...tsCells, ...builtMDCells].map((cell) => {
     const name = path.parse(cell.builtPath).name;
-    const relPath = path.relative(cellsOutdir, cell.builtPath);
+    const relPath = relativePathAlwaysDot(cellsOutdir, cell.builtPath);
     const relPathParsed = path.parse(relPath);
     return `import * as ${name} from "${path.join(relPathParsed.dir, name)}";`;
   });
 
   const cssImports = cssCells.map(
-    (cell) => `import "${path.relative(cellsOutdir, cell.sourcePath)}";`
+    (cell) => `import "${relativePathAlwaysDot(cellsOutdir, cell.sourcePath)}";`
   );
 
   if (!cssImports.length) {
@@ -130,7 +135,9 @@ export function getCellsFileCode() {
       emptyCSSPath,
       "/* empty placeholder so we always generate css output */"
     );
-    cssImports.push(`import "${path.relative(cellsOutdir, emptyCSSPath)}";`);
+    cssImports.push(
+      `import "${relativePathAlwaysDot(cellsOutdir, emptyCSSPath)}";`
+    );
   }
 
   const names = cells
