@@ -1,5 +1,5 @@
 {
-  "name": "notebook",
+  "name": "@yousefed/notebook",
   "version": "1.0.0",
   "description": "",
   "main": "dist/notebook.js",
