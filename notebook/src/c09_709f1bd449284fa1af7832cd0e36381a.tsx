@@ -57,9 +57,9 @@ export default (
   <div>
     <p>
       <a href="" onClick={print}>
-        Print
+        Print routes
       </a>
     </p>
-    {table}
+    <div style={{ display: "none" }}>{table}</div>
   </div>
 );

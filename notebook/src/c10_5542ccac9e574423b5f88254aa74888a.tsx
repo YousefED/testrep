@@ -5,6 +5,19 @@ export const labelData = [...$.joined].sort((a, b) => a.index - b.index);
 
 const csv = papa.unparse(labelData);
 
+// export default (
+//   <textarea value={csv} style={{ width: "500px", height: "200px" }}></textarea>
+// );
+
+function download(e: any) {
+  e.preventDefault();
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  window.open(url);
+}
+
 export default (
-  <textarea value={csv} style={{ width: "500px", height: "200px" }}></textarea>
+  <a href="" onClick={download}>
+    Download CSV
+  </a>
 );
