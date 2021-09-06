@@ -3,7 +3,7 @@ let url = "https://wa.me/?text=";
 url += encodeURIComponent(
   $.mapLinks
     .map((l, i) => {
-      return `Route ${i}\n${l}`;
+      return `Route ${i + 1}\n${l}`;
     })
     .join("\n\n")
 );
