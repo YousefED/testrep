@@ -22,9 +22,14 @@ if (
 export default (
   <div>
     {error ? (
-      <h1 style={{ color: "red",marginBottom:".5em" }}>Adressen komen niet overeen</h1>
+      <h1 style={{ color: "red", marginBottom: ".5em" }}>
+        Adressen komen niet overeen
+      </h1>
     ) : (
-        <h1 style={{ color: "green", marginBottom: ".5em" }}> Adressen komen overeen</h1>
+      <h1 style={{ color: "green", marginBottom: ".5em" }}>
+        {" "}
+        Adressen komen overeen
+      </h1>
     )}
     <table>
       <tr>
