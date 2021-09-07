@@ -13,7 +13,10 @@ function download(e: any) {
   e.preventDefault();
   const blob = new Blob([csv], { type: "text/csv" });
   const url = window.URL.createObjectURL(blob);
-  window.open(url);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "labels.csv";
+  link.dispatchEvent(new MouseEvent("click"));
 }
 
 export default (
