@@ -8,6 +8,7 @@ const table = (
           <table>
             {r.map((stop) => (
               <tr>
+                <td>{stop.Arrival}</td>
                 <td>{stop.Address}</td>
                 <td>{stop.Name}</td>
               </tr>
