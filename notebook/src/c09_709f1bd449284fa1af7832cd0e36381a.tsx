@@ -6,13 +6,22 @@ const table = (
         <div className="route">
           <h1>Route {i + 1}</h1>
           <table>
-            {r.map((stop) => (
-              <tr>
-                <td>{stop.Arrival}</td>
-                <td>{stop.Address}</td>
-                <td>{stop.Name}</td>
-              </tr>
-            ))}
+            {r.map((stop: any) => {
+              // TODO: this can be faster by looping over $.joined instead of $.routes above
+              const match = $.joined.find(
+                (el) => el.index === parseInt(stop["#"])
+              );
+              return (
+                <tr>
+                  <td>{stop.Arrival}</td>
+                  <td>{stop.Address}</td>
+                  <td>{match?.["Samengesteld Adres"] || "not found"}</td>
+                  <td>{match?.Telefoonnummer || "not found"}</td>
+                  <td>{match?.aantal || "not found"}</td>
+                  <td>{match?.Order || "not found"}</td>
+                </tr>
+              );
+            })}
           </table>
           <img src={$.qrcodes[i]} />
         </div>
