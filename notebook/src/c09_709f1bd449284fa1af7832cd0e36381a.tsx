@@ -14,11 +14,22 @@ const table = (
               return (
                 <tr>
                   <td>{stop.Arrival}</td>
-                  <td>{stop.Address}</td>
-                  <td>{match?.["Samengesteld Adres"] || "not found"}</td>
-                  <td>{match?.Telefoonnummer || "not found"}</td>
-                  <td>{match?.aantal || "not found"}</td>
-                  <td>{match?.Order || "not found"}</td>
+                  {!!match && (
+                    <>
+                      <td>{match?.["Samengesteld Adres"]}</td>
+                      <td>{match?.Telefoonnummer}</td>
+                      <td>{match?.aantal}</td>
+                      <td>{match?.Order}</td>
+                    </>
+                  )}
+                  {!match && (
+                    <>
+                      <td>{stop.Address}</td>
+                      <td>Not found</td>
+                      <td></td>
+                      <td></td>
+                    </>
+                  )}
                 </tr>
               );
             })}
